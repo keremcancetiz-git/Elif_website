@@ -334,6 +334,18 @@
             .cursor-main, .cursor-outer { display: none; }
         }
 
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .cursor-main, .cursor-outer, .ripple { display: none !important; }
+            .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
     </style>
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -393,8 +405,8 @@
 
             <!-- Nav links -->
             <div class="hidden md:flex items-center gap-8">
-                <button onclick="showSection('work')" id="nav-work" class="nav-link active">Work</button>
-                <button onclick="showSection('about')" id="nav-about" class="nav-link">About</button>
+                <button onclick="showSection('work')" id="nav-work" aria-label="Show work section" class="nav-link active">Work</button>
+                <button onclick="showSection('about')" id="nav-about" aria-label="Show about section" class="nav-link">About</button>
                 <a href="mailto:hello@elif.design" class="nav-link">Contact</a>
                 <a href="Elif_Ozyasar_CV_February.pdf" download
                     style="display:flex; align-items:center; gap:6px; background:transparent; border-top:1px solid var(--border); color:var(--ink); font-size:12px; font-weight:500; letter-spacing:0.06em; padding:9px 20px; border-radius:100px; transition:opacity 0.2s; text-transform:uppercase; text-decoration:none;"
@@ -893,7 +905,7 @@
 
             modal.innerHTML = `
         <!-- Close -->
-        <button onclick="closeModal()" aria-label="Close project"
+        <button onclick="closeModal()" aria-label="Close project" tabindex="0"
             style="position:fixed; top:12px; right:max(12px, calc((100vw - 960px) / 2 + 12px)); z-index:121; width:44px; height:44px; background:var(--paper); border:1px solid var(--border); border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; box-shadow:0 4px 18px rgba(0,0,0,0.6);"
             onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='var(--paper)'">
             <i data-lucide="x" style="width:18px; height:18px; color:var(--ink);"></i>
@@ -1138,6 +1150,7 @@
 
         // ─────────────────────────── ANTIGRAVITY INITIALIZATION ───────────────────────────
         document.addEventListener("DOMContentLoaded", (event) => {
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             // Initialize Lenis smooth scroll
             const lenis = new Lenis({
                 duration: 1.2,
@@ -1164,7 +1177,7 @@
             // Text reveal scroll scrub
             const aboutSentences = document.querySelectorAll('.about-sentence');
             if (aboutSentences.length > 0) {
-                gsap.from(aboutSentences, {
+                if(!prefersReducedMotion) gsap.from(aboutSentences, {
                     scrollTrigger: {
                         trigger: "#section-about",
                         start: "top 80%",
@@ -1182,7 +1195,7 @@
                 const x = (e.clientX / window.innerWidth - 0.5) * 30;
                 const y = (e.clientY / window.innerHeight - 0.5) * 30;
                 // Animate background color gradients via variable or translation
-                gsap.to('body', {
+                if(!prefersReducedMotion) gsap.to('body', {
                     '--mesh-x': `${x}px`,
                     '--mesh-y': `${y}px`,
                     duration: 2,
@@ -1191,7 +1204,7 @@
             });
 
             // Parallax background on scroll
-            gsap.to("body", {
+            if(!prefersReducedMotion) gsap.to("body", {
                 scrollTrigger: {
                     scrub: true
                 },
@@ -1212,19 +1225,19 @@
                 mouseY = e.clientY;
                 
                 // Immediate main dot
-                gsap.set(cursorMain, {
+                if(!prefersReducedMotion) gsap.set(cursorMain, {
                     x: mouseX - 4,
                     y: mouseY - 4
                 });
             });
 
             // Smooth trailing outer circle
-            gsap.ticker.add(() => {
+            if(!prefersReducedMotion) gsap.ticker.add(() => {
                 const dt = 1.0 - Math.pow(1.0 - 0.15, gsap.ticker.deltaRatio());
                 cursorX += (mouseX - cursorX) * dt;
                 cursorY += (mouseY - cursorY) * dt;
                 
-                gsap.set(cursorOuter, {
+                if(!prefersReducedMotion) gsap.set(cursorOuter, {
                     x: cursorX - 20,
                     y: cursorY - 20
                 });
@@ -1235,11 +1248,11 @@
             interactiveElements.forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     cursorOuter.classList.add('hover');
-                    gsap.to(cursorMain, { scale: 2, duration: 0.3 });
+                    if(!prefersReducedMotion) gsap.to(cursorMain, { scale: 2, duration: 0.3 });
                 });
                 el.addEventListener('mouseleave', () => {
                     cursorOuter.classList.remove('hover');
-                    gsap.to(cursorMain, { scale: 1, duration: 0.3 });
+                    if(!prefersReducedMotion) gsap.to(cursorMain, { scale: 1, duration: 0.3 });
                 });
             });
 
@@ -1252,7 +1265,7 @@
                 ripple.style.left = e.clientX + 'px';
                 ripple.style.top = e.clientY + 'px';
                 
-                gsap.to(ripple, {
+                if(!prefersReducedMotion) gsap.to(ripple, {
                     width: 120,
                     height: 120,
                     opacity: 0,
@@ -1263,7 +1276,7 @@
             });
 
             // Parallax on Hero elements
-            gsap.from(".gsap-reveal", {
+            if(!prefersReducedMotion) gsap.from(".gsap-reveal", {
                 y: 60,
                 rotationX: -15,
                 opacity: 0,
@@ -1281,7 +1294,7 @@
                     const x = e.pageX - position.left - position.width / 2;
                     const y = e.pageY - position.top - position.height / 2;
 
-                    gsap.to(elem, {
+                    if(!prefersReducedMotion) gsap.to(elem, {
                         x: x * 0.2, // Magnet strength
                         y: y * 0.2,
                         duration: 0.6,
@@ -1289,7 +1302,7 @@
                     });
                 });
                 elem.addEventListener('mouseleave', () => {
-                    gsap.to(elem, {
+                    if(!prefersReducedMotion) gsap.to(elem, {
                         x: 0,
                         y: 0,
                         duration: 0.6,
@@ -1303,7 +1316,7 @@
                 ScrollTrigger.batch(".project-card-wrapper", {
                     interval: 0.1,
                     batchMax: 3,
-                    onEnter: batch => gsap.fromTo(batch,
+                    onEnter: batch => if(!prefersReducedMotion) gsap.fromTo(batch,
                         { opacity: 0, y: 80, rotationX: 10, scale: 0.95 },
                         { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "power3.out", stagger: 0.15, overwrite: true }
                     )
