@@ -1,0 +1,12 @@
+
+*.py
+*.pyc
+*.bak
+__pycache__
+*.log
+.DS_Store
+Unused/
+*.tmp*
+
+
+elif_portfolio/Internship report B3.1 Elif Ozyasar 1777920.pdf

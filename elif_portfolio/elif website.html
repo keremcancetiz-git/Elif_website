@@ -1,0 +1,937 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elif Özyaşar | UX & Service Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cream:    #F8F6F2;
+            --paper:    #FFFFFF;
+            --border:   #E4DDD4;
+            --ink:      #1C1917;
+            --muted:    #7A7068;
+            --accent:   #B5724A;
+            --accent-bg:#F5EDE5;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; }
+
+        /* â”€â”€ Project card animation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .project-card { transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* â”€â”€ Scroll reveal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.55s ease-out, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* â”€â”€ Modal slide in â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .animate-in { animation: slideIn 0.4s ease-out forwards; }
+        @keyframes slideIn {
+            from { transform: translateY(60px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        /* â”€â”€ Step stepper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .step-btn { transition: all 0.25s ease; }
+        .step-btn.active {
+            border-left: 3px solid var(--accent);
+            background: var(--accent-bg);
+            padding-left: 1.25rem;
+        }
+        .fade-content { animation: fadeIn 0.35s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(8px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        /* â”€â”€ Logic overlay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        #logic-overlay.active {
+            display: flex;
+            animation: fadeOver 0.3s ease;
+        }
+        @keyframes fadeOver {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        .no-scroll { overflow: hidden; }
+
+        /* â”€â”€ Section label â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .label-accent { color: var(--accent); }
+
+        /* â”€â”€ Divider line â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .rule { flex: 1; height: 1px; background: var(--border); }
+
+        /* â”€â”€ Nav active â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .nav-link {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+        .nav-link.active, .nav-link:hover { color: var(--ink); }
+
+        /* â”€â”€ Tag chips â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        .tag {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            background: var(--accent-bg);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        /* â”€â”€ Grain overlay (subtle texture) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAAGFBMVEWNjY2Hh4d/f394eHhycnJqamplZWVhYWEAhOkHAAABDklEQVR42g3OOYKCMAAF0B8mwVYUpYXI0irI0BJBbFlEW9m0FRG4/sw7wYP9fS6yJhgTqhSQDHm1PJonzyMFHO5OLMZOpMECmdo99D4zapsCfUGXyy4j0UWZMVvDscrOQ8lJj3ZyjElseRjmL7Af+eJ/dPN+WEiIXG3isyXyRNUA5dAXvpdeX7cAnlrFm95ANly32DdJp6WD+XHeNcr4FL3laleS+oKpqB7VKNpna56xXZUhF+G79vcqWlVKfsU9KTxHh0vdvOVfyxw1ii6Q1rk4RxZPyf/ArlcnIXM99UGpqzWSTTa/fYA8vMpsTsgjYB7qOVQSdhhEzDK4Y7qWm7gynDTEs75BuQ8Mnzb+A0pyQmPxjXFeAAAAAElFTkSuQmCC");
+            background-repeat: repeat;
+            background-size: 128px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• NAVIGATION â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-7" style="background: transparent;">
+    <div class="max-w-6xl mx-auto px-8 flex justify-between items-center">
+        <!-- Logo -->
+        <div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; letter-spacing:0.02em; color:var(--ink);">Elif Özyaşar</div>
+            <div class="label" style="margin-top:2px; color:var(--accent);">UX Researcher &amp; Service Designer</div>
+        </div>
+
+        <!-- Nav links -->
+        <div class="hidden md:flex items-center gap-8">
+            <button onclick="showSection('work')" id="nav-work" class="nav-link active">Work</button>
+            <button onclick="showSection('about')" id="nav-about" class="nav-link">About</button>
+            <a href="mailto:hello@elif.design" class="nav-link">Contact</a>
+            <a href="Elif_Ozyasar_CV_February.pdf" download
+               style="display:flex; align-items:center; gap:6px; background:var(--ink); color:#fff; font-size:12px; font-weight:500; letter-spacing:0.06em; padding:9px 20px; border-radius:100px; transition:opacity 0.2s; text-transform:uppercase; text-decoration:none;"
+               onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
+                <i data-lucide="download" style="width:13px; height:13px;"></i> CV
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MAIN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<main id="main-content">
+
+    <!-- â”€â”€â”€ WORK SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="section-work">
+
+        <!-- Hero -->
+        <section style="padding-top: 160px; padding-bottom: 64px;" class="px-8">
+            <div class="max-w-6xl mx-auto" style="display:grid; grid-template-columns:1fr auto; gap:64px; align-items:end;">
+                <div>
+                    <div class="label label-accent reveal" style="margin-bottom:24px;">Elif Özyaşar — UX Researcher & Service Designer</div>
+                    <h1 class="reveal" style="font-size:clamp(46px,7vw,84px); font-weight:600; line-height:0.95; letter-spacing:-0.02em; margin-bottom:32px; transition-delay:60ms;">
+                        Designing for and with people
+                    </h1>
+                    <p class="reveal" style="font-size:17px; line-height:1.7; max-width:600px; color:var(--muted); font-weight:300; transition-delay:120ms;">
+                        I'm a user-centered designer with a background in Industrial Design, focused on shaping services and experiences through research. Understanding people deeply, their behaviours and needs, is what drives my work and where I know I can make a difference.
+                    </p>
+                </div>
+                <!-- Profile photo -->
+                <div class="reveal hidden md:block" style="width:240px; flex-shrink:0; transition-delay:180ms;">
+                    <div style="border-radius:16px; overflow:hidden; border:1px solid var(--border); background:var(--accent-bg); aspect-ratio:3/4; position:relative;">
+                        <img
+                            src="elif_profile.jpg"
+                            style="width:100%; height:100%; object-fit:cover; filter:grayscale(0.8) contrast(1.1); transition:all 0.6s ease;"
+                            onmouseover="this.style.filter='grayscale(0) contrast(1)'"
+                            onmouseout="this.style.filter='grayscale(0.8) contrast(1.1)'"
+                            alt="Elif Özyaşar"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto reveal" style="margin-top:64px; padding-top:28px; border-top:1px solid var(--border); transition-delay:240ms;"></div>
+        </section>
+
+        <!-- Work Grid -->
+        <section style="padding-bottom:120px;" class="px-8">
+            <div class="max-w-6xl mx-auto">
+                <div id="projects-container" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:24px; position:relative; min-height:500px;">
+                    <!-- JS injected -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology -->
+        <section style="padding:80px 0; background:var(--paper); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+            <div class="max-w-6xl mx-auto px-8">
+                <div style="display:flex; align-items:center; gap:20px; margin-bottom:56px;" class="reveal">
+                    <span class="label label-accent">My Design Approach</span>
+                    <div class="rule"></div>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:56px;">
+                    <!-- Column 1 -->
+                    <div class="reveal" style="transition-delay:80ms;">
+                        <i data-lucide="microscope" style="width:24px; height:24px; color:var(--accent); margin-bottom:18px;"></i>
+                        <h3 style="font-size:24px; font-weight:600; margin-bottom:12px; letter-spacing:-0.01em;">User Research</h3>
+                        <p style="font-size:14px; line-height:1.75; color:var(--muted); font-weight:300;">Through interviews, diary studies, usability testing, and observation, I look for the behaviours and details that reveal what people actually need. Good research does not just inform the current project, it can open up entirely new design opportunities.</p>
+                    </div>
+                    <!-- Column 2 -->
+                    <div class="reveal" style="transition-delay:160ms;">
+                        <i data-lucide="network" style="width:24px; height:24px; color:var(--accent); margin-bottom:18px;"></i>
+                        <h3 style="font-size:24px; font-weight:600; margin-bottom:12px; letter-spacing:-0.01em;">Systems Thinking</h3>
+                        <p style="font-size:14px; line-height:1.75; color:var(--muted); font-weight:300;">I rarely look at a single screen or touchpoint in isolation. I map how everything connects, the people, the services, the interactions behind the scenes, and how understanding that bigger picture leads to better, more coherent design decisions.</p>
+                    </div>
+                    <!-- Column 3 -->
+                    <div class="reveal" style="transition-delay:240ms;">
+                        <i data-lucide="bar-chart-3" style="width:24px; height:24px; color:var(--accent); margin-bottom:18px;"></i>
+                        <h3 style="font-size:24px; font-weight:600; margin-bottom:12px; letter-spacing:-0.01em;">Data-Enabled Design</h3>
+                        <p style="font-size:14px; line-height:1.75; color:var(--muted); font-weight:300;">I use real data to inform and validate design decisions. Data is not just a research tool for me, it is what keeps the design process grounded in reality.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- â”€â”€â”€ ABOUT SECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+    <div id="section-about">
+        <section style="padding-top:160px; padding-bottom:120px;" class="px-8">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="reveal" style="font-size:clamp(40px,6vw,64px); font-weight:600; font-style:italic; line-height:1.1; margin-bottom:64px; letter-spacing:-0.01em;">
+                    About Me
+                </h2>
+                <div class="reveal" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; transition-delay:100ms;">
+                    <div style="font-size:16px; line-height:1.8; color:var(--muted); font-weight:300; display:flex; flex-direction:column; gap:20px;">
+                        <p>I see myself as a reflective thinker before a designer. I'm interested in how data and research can inform design decisions and help uncover what people actually need.</p>
+
+                        <p>Reflection is an important part of my process. It helps me question assumptions, understand my values, and stay mindful of how my decisions influence the final product. This curiosity and attention to detail is what draws me to research: the diary studies, in-context testing, and behavioural observations that reveal what's under the surface.</p>
+
+                        <p>I care about services and designs that help shape everyday life. But more than any single domain, I'm interested in designing for real situations, messy, human ones.</p>
+
+                        <p>I also believe confidence comes from allowing yourself to be a beginner. Some of my best work has happened in the early, undefined stages of a project, where the problem isn't fully formed yet and there's still room for a new method, a new context, or a perspective. In teams, I'm drawn to that space of early exploration, and I find it easy to adapt and build on perspectives that are different from my own.</p>
+                                        </div>
+                    <div>
+                        <div style="margin-bottom:6px; display:flex; align-items:center; gap:16px; padding-bottom:20px; border-bottom:1px solid var(--border);">
+                            <span class="label label-accent">Toolkit</span>
+                            <div class="rule"></div>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <div class="label label-accent" style="margin-bottom:10px;">Design & Research</div>
+                            <ul style="margin:0 0 20px 0; padding-left:18px; display:flex; flex-direction:column; gap:6px; color:var(--ink); font-size:14px; line-height:1.6;">
+                                <li>Service Blueprinting</li>
+                                <li>User Journey Mapping</li>
+                                <li>User Research & Data Analysis</li>
+                                <li>Qualitative & Quantitative Research Methods</li>
+                            </ul>
+                            <div class="label label-accent" style="margin-bottom:10px;">Tools & Prototyping</div>
+                            <ul style="margin:0; padding-left:18px; display:flex; flex-direction:column; gap:6px; color:var(--ink); font-size:14px; line-height:1.6;">
+                                <li>Figma</li>
+                                <li>Solidworks</li>
+                                <li>Fusion 360</li>
+                                <li>Adobe CC</li>
+                                <li>Arduino IDE</li>
+                                <li>Processing & JavaScript</li>
+                                <li>Sketching</li>
+                                <li>Physical Prototyping</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOGIC ZOOM OVERLAY â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="logic-overlay" class="fixed inset-0 z-[200] hidden items-center justify-center p-8" style="background:rgba(28,25,23,0.96);" onclick="closeLogicZoom()">
+    <button class="absolute top-8 right-8" style="color:#fff; opacity:.6;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.6">
+        <i data-lucide="x" style="width:32px; height:32px;"></i>
+    </button>
+    <div style="max-width:1100px; width:100%; display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <div style="background:#fff; border-radius:12px; overflow:auto; width:100%; max-height:78vh; cursor:grab;">
+            <img id="zoom-img" src="" style="width:100%; height:auto; min-width:1100px;" alt="Logic map">
+        </div>
+        <span class="label" style="color:var(--accent);">Pan and explore the technical flow</span>
+    </div>
+</div>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• FOOTER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<footer style="background:var(--ink); color:#fff; padding:100px 32px 56px;">
+    <div class="max-w-6xl mx-auto" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+        <h2 class="reveal" style="font-family:'Cormorant Garamond',serif; font-size:clamp(40px,7vw,80px); font-weight:500; font-style:italic; line-height:1.05; margin-bottom:48px; letter-spacing:-0.01em;">
+            Interested in working<br/>together?
+        </h2>
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-bottom:64px;" class="reveal">
+            <a href="mailto:hello@elif.design"
+               style="display:flex;align-items:center;gap:8px;background:#fff;color:var(--ink);font-size:13px;font-weight:500;padding:12px 24px;border-radius:100px;text-decoration:none;transition:background .2s;"
+               onmouseover="this.style.background='var(--accent-bg)'" onmouseout="this.style.background='#fff'">
+                <i data-lucide="mail" style="width:16px; height:16px;"></i> Get in touch
+            </a>
+            <a href="Elif_Ozyasar_CV_February.pdf" download
+               style="display:flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:13px;font-weight:500;padding:12px 24px;border-radius:100px;text-decoration:none;transition:opacity .2s;"
+               onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+                <i data-lucide="download" style="width:16px; height:16px;"></i> Download CV
+            </a>
+            <a href="https://www.linkedin.com/in/elif-%C3%B6zya%C5%9Far/" target="_blank"
+               style="display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;padding:12px 24px;border-radius:100px;text-decoration:none;transition:border-color .2s,color .2s;"
+               onmouseover="this.style.borderColor='rgba(255,255,255,0.6)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.7)'">
+                <i data-lucide="linkedin" style="width:16px; height:16px;"></i> LinkedIn
+            </a>
+        </div>
+        <p style="font-size:12px; color:rgba(255,255,255,0.35); letter-spacing:0.08em; text-transform:uppercase;">© 2026 Elif Özyaşar — Eindhoven, The Netherlands</p>
+    </div>
+</footer>
+
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• PROJECT MODAL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<div id="project-modal" class="fixed inset-0 z-[100] overflow-y-auto hidden" style="background:var(--paper);"></div>
+
+<script>
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ PROJECT DATA (unchanged) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const projects = [
+    {
+        id: 'riseup',
+        title: "RiseUp",
+        subtitle: "A morning routine system for the smart home, designed through research and family insights.",
+        role: "Lead UX Researcher & System Designer",
+        client: "TU/e Industrial Design",
+        timeline: "02/2025 – 06/2025",
+        tools: ["Figma", "DataFoundry", "OOCSI", "Processing", "Arduino"],
+        methods: ["Diary Studies", "Thematic Analysis", "Scenario-Based User Testing", "In-Situ Validation", "Wizard of Oz", "Data-Enabled Design"],
+        tags: ["UX Research", "Diary Studies", "Data-Enabled Design", "Smart Home"],
+        coverLayout: "horizontal",
+        coverImages: [
+            { url: "pics service design portfolio/riseup/usertest1.jpg", pos: "54% 46%" },
+            { url: "pics service design portfolio/riseup/usertest2.jpg", pos: "55% 48%" }
+        ],
+        image: "pics service design portfolio/riseup/usertest1.jpg",
+        imagePos: "54% 46%",
+        overview: "Current smart technologies help people control their devices, but what people actually want is control over their lives. RiseUp explores what that really means, through data-enabled design and careful user testing with real families.",
+        goal: "Current technologies collect data but often fail to interpret it in ways that reflect individual values and expectations. In this project, my goal was to explore how to design a system that embraces the dynamic nature of domestic life and creates truly personalized user experiences.",
+        outcomes: [
+            "Findings from the user studies indicate that RiseUp not only helps users manage their mornings more efficiently, but also encourages the development of new habits and greater self-awareness.",
+            "RiseUp shown to have a positive impact on participants' morning planning by providing insights into their behaviors.",
+            "RiseUp demonstrates the potential of smart home technologies to provide meaningful, behavior-aware support to families by adapting to their dynamic daily lives.",
+            "Throughout this project, I explored my vision of using data to design systems that understand users beyond the surface level. This led to an inclusive, adaptive design that evolves alongside user needs."
+        ],
+        insight: "Smart homes optimize devices, but humans need systems that optimize coordination and adapt to inevitable disruptions.",
+        challenge: "Current smart technologies fail to understand context. The challenge was to design a UX system capable of interpreting live behavioral patterns and supporting shared decision-making under time pressure.",
+        gallery: [
+            { title: "System Concept", url: "pics service design portfolio/riseup/theconcept.jpg", pos: "50% 45%", desc: "Hybrid physical-digital interface for routine management." },
+            { title: "System Architecture", url: "pics service design portfolio/riseup/Frame 35.png", pos: "46% 50%", desc: "Data flow mapping household actions to system responses." },
+            { title: "Data Visualization", url: "pics service design portfolio/riseup/interface2.jpg", pos: "50% 40%", desc: "Translating routine deviations into reflective UI insights." },
+            { title: "In-Situ Validation", url: "pics service design portfolio/riseup/usertest2.jpg", pos: "55% 48%", desc: "Live prototype testing in a realistic household environment." },
+            { title: "Co-Creation Artifacts", url: "pics service design portfolio/riseup/Group 5.png", pos: "50% 52%", desc: "Workshop outputs used to align system logic with family dynamics." }
+        ],
+        process: [
+            { title: "Scenarios & Personas", desc: "To position the project, I explored how personalised smart home solutions could impact the lives of a fictional family living in 2040. Through scenario mapping, acting out situations, and literature research, morning routines emerged as a promising area of intervention, given their influence on mental wellbeing and people's ability to focus throughout the day.", imgs: [{ url: "pics service design portfolio/riseup/Group 5.png", pos: "50% 52%" }, { url: "pics service design portfolio/riseup/image.png", pos: "50% 50%" }], img: "pics service design portfolio/riseup/Group 5.png", pos: "50% 52%" },
+            { title: "System Scoping & First Prototype", desc: "I mapped data flows between touchpoints, including possible conflicts, and included adaptive system alerts to understand what such a system would need to truly serve its users. I created a simple flow and low-fidelity prototypes to study how that data could work in practice. The prototype consisted of a planner that alerted users in times of conflict and provided an overview of their morning.", imgs: [{ url: "pics service design portfolio/riseup/Frame 35.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 34.png", pos: "50% 50%" }], img: "pics service design portfolio/riseup/Frame 35.png", pos: "50% 50%" },
+            { title: "Exploratory User Test", desc: "I conducted an initial exploratory user test to understand how RiseUp could be used in practice. Participants were encouraged to step outside their personal routines and collaboratively build a shared sense of family during the session. Using a within-subject study design, each participant experienced routine disruptions both with and without RiseUp. I closely observed how they communicated and made decisions together.", imgs: [{ url: "pics service design portfolio/riseup/ut1.jpg", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/ut2.heic", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/ut3.jpg", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/ut4.jpg", pos: "50% 50%" }], img: "pics service design portfolio/riseup/ut1.jpg", pos: "50% 50%" },
+            { title: "Design Iteration", desc: "The test revealed the need for more personalised data interpretation and a broader range of inputs to accommodate different kinds of users. I redesigned the data flow to explore how information gathered by the system could be presented as meaningful insights. Visualising the system helped me explore how RiseUp could support users in making more informed and mindful decisions about their routines.", imgs: [{ url: "pics service design portfolio/riseup/image 46.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 43.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/fbp - user flow - setup (1).jpg", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/fbp - user flow - disruption (1).jpg", pos: "50% 50%" }], img: "pics service design portfolio/riseup/image 46.png", pos: "50% 50%" },
+            { title: "Diary Studies", desc: "To test the concept with real families and validate its quality, I planned a second user test. The goal was to understand if and how a system that collects and presents data about morning routines can actually influence people's mornings. The first stage focused on understanding participants' routines through diary entries, gathered daily via Telegram using a DataFoundry bot.", imgs: [{ url: "pics service design portfolio/riseup/Frame 46.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/image 30.png", pos: "50% 50%" }], img: "pics service design portfolio/riseup/Frame 46.png", pos: "50% 50%" },
+            { title: "In-depth Interviews & Data-Enabled Design", desc: "After data collection, I visualised participants' routines to discuss in individual interviews. As people reflected on their own data, many noticed details they had never paid attention to before. These insights directly shaped a new reflective feature of the system: data visualisations showing deviations from planned routines, skipped activities, and personalised suggestions to support further reflection.", imgs: [{ url: "pics service design portfolio/riseup/Frame 55.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 56.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 85.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/image 31.png", pos: "50% 50%" }], img: "pics service design portfolio/riseup/Frame 55.png", pos: "50% 50%" },
+            { title: "Remote Study & In-Situ Validation", desc: "In the second stage, participants were given access to an interactive digital prototype that visualised their morning routines. They adjusted it to better fit their schedules, and the system generated a suggested routine balancing their current and desired behaviours. At the end of each day, participants received a routine analysis summarising their activities and highlighting what they had skipped.", imgs: [{ url: "pics service design portfolio/riseup/Frame 51.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 86.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 53.png", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/Frame 58.png", pos: "50% 50%" }], img: "pics service design portfolio/riseup/Frame 51.png", pos: "50% 50%" },
+            { title: "Final Prototype", desc: "It became clear that participants had high expectations for personalisation in a smart home system. They wanted the system to understand not just their current actions, but their patterns, external factors, and how their routines connected to others in the household. Meeting this required a machine learning algorithm, which was scoped as part of the final prototype.", imgs: [{ url: "pics service design portfolio/riseup/interface2.jpg", pos: "50% 50%" }, { url: "pics service design portfolio/riseup/theconcept.jpg", pos: "50% 50%" }], img: "pics service design portfolio/riseup/interface2.jpg", pos: "50% 50%" },
+            { title: "AI & Future Direction", desc: "I researched how a machine learning algorithm could be implemented and interviewed two experts to assess feasibility. The proposed system would generate routine suggestions and evaluate their effectiveness by tracking user responses. The full algorithm was not implemented within the project timeframe, but remains a clear and necessary next step.", img: "pics service design portfolio/riseup/Screenshot (26).png", pos: "50% 50%" }
+        ],
+        logicMap: "pics service design portfolio/riseup/Group 31.png",
+        logicPos: "50% 50%",
+        logicSummary: "RiseUp sits at the intersection of real human and system behaviour. The data gathered from users directly shaped the design, turning individual morning insights into personalised suggestions, data visualisations, and planning for the next day.",
+        critique: "The study uncovered emotional and social dimensions that affected how RiseUp was received such as feelings of control, gendered family roles, and differing values around morning routines. These are concepts that fell outside the project scope but are deeply relevant to the design space. A future direction that actively engages with these human complexities could lead to a more socially aware system.",
+        improvement: "Since the AI algorithm was not implemented, Rise Up’s functionality remains limited and many potential use cases lie beyond the scope of this project. Future work should explore how the system could scale and how it might better support collaborative family routines."
+    },
+    {
+        id: 'bathbobber',
+        title: "Bathbobber",
+        subtitle: "Designing the interaction system of a smart ice bath tracker, from research to prototype.",
+        role: "UX & Interaction Designer",
+        client: "Internship at TSG — Bathbobber as client",
+        timeline: "09/2024 – 02/2025",
+        tools: ["Figma", "Arduino IDE", "Solidworks", "Fusion 360", "Adobe CC", "Microsoft 365"],
+        methods: ["Persona & Scenario Mapping", "Auto-Ethnography", "Usability Testing", "Iterative Prototyping", "UI Flow Mapping", "FMEA Risk Analysis", "Requirements Documentation"],
+        tags: ["Interaction and UI Design", "User Research", "Technical Documentation", "Product Ownership"],
+        coverImages: [
+            { url: "pics service design portfolio/bathbobber/usertest.jpg", pos: "50% 54%" },
+            { url: "pics service design portfolio/bathbobber/usertest2.jpg", pos: "50% 50%" }
+        ],
+        image: "pics service design portfolio/bathbobber/cover.jpg",
+        imagePos: "52% 46%",
+        overview: "BathBobber is a smart ice bath timer and thermometer that aims to make tracking cold exposure sessions more accessible. My design challenge was exploring and developing the interaction system, focusing on what data would be communicated and how. Working independently with a real client, I identified areas for improvement in the existing design and proposed solutions through research, testing, and iteration.",
+        goal: "The existing design had open questions around usability and interaction. My goal was to take ownership of these, researching the user, defining requirements, and iteratively developing an interaction system that felt intuitive under real conditions. It was also a step in my development as a designer, working independently in a professional environment for the first time.",
+        outcomes: [
+            "Developed an end-to-end UI state machine, mapping all user pathways and error states.",
+            "Conducted comprehensive FMEA (Failure Mode and Effects Analysis) to prioritize UX safety cues.",
+            "Translated technical product requirements (LoR) into a seamless physical-to-digital user journey.",
+            "Validated hardware ergonomics and UI readability through contextual usability testing."
+        ],
+        insight: "During extreme cold exposure, cognitive load drops sharply. Interfaces must be designed for a diminished state, utilizing instinctual cues rather than complex data.",
+        challenge: "How do you design an interface that remains usable when a user's hands are freezing, their vision is impaired, and their cognitive processing is reduced?",
+        gallery: [
+            { title: "Product Context", url: "pics service design portfolio/bathbobber/cover.jpg", pos: "52% 50%", desc: "The Bathbobber device in its intended usage environment." },
+            { title: "Ergonomic Interaction", url: "pics service design portfolio/bathbobber/Frame 44.png", pos: "52% 35%", desc: "Validating physical grip and single-hand operability." },
+            { title: "UI State Architecture", url: "pics service design portfolio/bathbobber/UIMAP.png", pos: "50% 46%", desc: "Comprehensive mapping of interface states and user flows." }
+        ],
+        process: [
+            { title: "Strategic Planning", desc: "Defined project scopes, UX deliverables, and aligned interaction goals with business requirements.", img: "pics service design portfolio/bathbobber/image 2.png", pos: "50% 50%" },
+            { title: "Contextual Auto-Ethnography", desc: "Combined medical literature review with first-hand cold plunge experience to deeply understand the user's physiological state.", img: "pics service design portfolio/bathbobber/image 68.png", pos: "50% 50%" },
+            { title: "Technical Requirements (LoR)", desc: "Bridged hardware and software by documenting functional requirements, use conditions, and ergonomic constraints.", img: "pics service design portfolio/bathbobber/image 69.png", pos: "50% 45%" },
+            { title: "Contextual Usability Testing", desc: "Tested interaction clarity and physical operability in simulated high-stress water environments.", img: "pics service design portfolio/bathbobber/usertest.jpg", pos: "50% 54%" },
+            { title: "FMEA & Risk Analysis", desc: "Mapped potential interaction failures to design preemptive visual warnings and safety fallbacks.", img: "pics service design portfolio/bathbobber/Frame 78.png", pos: "50% 48%" },
+            { title: "System State Architecture", desc: "Created a strict UI flow diagram dictating how the system transitions between states based on user inputs and sensor data.", img: "pics service design portfolio/bathbobber/UIMAP.png", pos: "50% 50%" },
+            { title: "UI Visual Design", desc: "Developed high-contrast interface elements optimized for rapid comprehension.", img: "pics service design portfolio/bathbobber/Frame 67.png", pos: "50% 52%" }
+        ],
+        logicMap: "pics service design portfolio/bathbobber/UIMAP.png",
+        logicPos: "50% 50%",
+        logicSummary: "The interface architecture prioritizes critical safety thresholds, utilizing color psychology and simplified metrics to ensure clarity during physiological stress.",
+        critique: "Bridging physical rotary encoder inputs with a digital matrix display created constraints in how quickly complex data could be navigated.",
+        improvement: "Implementing a secondary auditory feedback loop would ensure users receive critical time/temperature warnings even without visual contact."
+    },    {
+        id: 'sharespot',
+        title: "ShareSpot",
+        subtitle: "Service Design for Municipal Sharing Infrastructure",
+        role: "Researcher / UX Designer",
+        client: "Eindhoven Municipality",
+        team: ["Paolo Pocol", "Vlad Barbulescu", "Clim van Seccelen", "Radu Cretu"],
+        timeline: "09/2022 - 03/2023",
+        tools: ["Service Blueprints", "Figma", "Citizen Interviews", "IoT Prototyping"],
+        methods: ["Citizen Interviews", "Service Blueprinting", "Scenario Mapping", "FMEA", "IoT Prototyping"],
+        tags: ["Interaction Design", "UX Research", "Safety-Critical UX", "Service Design"],
+        image: "pics service design portfolio/sharespot/hero.jpg",
+        imagePos: "50% 55%",
+        overview: "ShareSpot is a service design project commissioned by Eindhoven Municipality to support low-income residents who struggle to access essential items. The concept uses shared IoT-enabled lockers to make borrowing and lending practical, local, and trust-based.",
+        goal: "Design an accessible public service that reduces barriers to borrowing essential items and supports community trust through a clear lending process.",
+        outcomes: [
+            "Identified access barriers through citizen-focused research in Eindhoven.",
+            "Defined a service concept linking physical lockers with a guided borrowing journey.",
+            "Mapped the lending lifecycle from access to return for municipality implementation discussions.",
+            "Framed trust, accessibility, and inclusion as central service requirements."
+        ],
+        insight: "Service infrastructure can reduce social and financial friction when trust is designed into everyday access points.",
+        challenge: "Low-income residents face difficulties accessing necessary tools and facilities due to cost constraints. The challenge was to design a feasible municipal sharing service that is inclusive and easy to use.",
+        gallery: [
+            { title: "ShareSpot Concept", url: "pics service design portfolio/sharespot/hero.jpg", pos: "50% 50%", desc: "Service concept for municipal borrowing and lending through smart lockers." },
+            { title: "Service Context", url: "pics service design portfolio/sharespot/hero.jpg", pos: "34% 52%", desc: "Urban context framing for inclusive community access." },
+            { title: "Project Outcome", url: "pics service design portfolio/sharespot/hero.jpg", pos: "66% 50%", desc: "Final concept visual used to communicate the proposal." }
+        ],
+        process: [
+            { title: "Citizen Research", desc: "Conducted research with residents to identify real barriers around access, affordability, and trust.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "35% 52%" },
+            { title: "Scenario & Persona Explorations", desc: "Explored usage scenarios across different household contexts and priorities.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "44% 48%" },
+            { title: "Service Requirements", desc: "Defined key requirements for accessibility, reliability, and operational feasibility.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "55% 50%" },
+            { title: "User Journey & Touchpoint Mapping", desc: "Outlined the borrowing and return flow to minimize friction for diverse users.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "64% 50%" },
+            { title: "Risk Assessment", desc: "Considered service risks and maintenance implications for municipal deployment.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "28% 60%" },
+            { title: "Service Blueprint", desc: "Mapped service touchpoints from item discovery to return confirmation.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "75% 52%" },
+            { title: "Concept Refinement", desc: "Refined communication and service logic to support inclusive public adoption.", img: "pics service design portfolio/sharespot/hero.jpg", pos: "50% 46%" }
+        ],
+        logicMap: "pics service design portfolio/sharespot/hero.jpg",
+        logicPos: "60% 52%",
+        logicSummary: "The service architecture connects citizens, shared lockers, and municipality operations into a coordinated borrowing ecosystem.",
+        critique: "A key tension remains balancing low-friction access with the safeguards required for public infrastructure.",
+        improvement: "A next step would test hybrid access options to ensure the service remains usable for residents with lower digital access."
+    }
+];
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ NAV SCROLL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 40) {
+        navbar.style.background = 'rgba(248,246,242,0.92)';
+        navbar.style.backdropFilter = 'blur(12px)';
+        navbar.style.boxShadow = '0 1px 0 var(--border)';
+    } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = '';
+        navbar.style.boxShadow = '';
+    }
+});
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ MODAL PROGRESS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+document.getElementById('project-modal').addEventListener('scroll', function() {
+    const scrollTop = this.scrollTop;
+    const scrollHeight = this.scrollHeight - this.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    const progressEl = document.getElementById('modal-progress');
+    if (progressEl) progressEl.style.width = progress + '%';
+});
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ESCAPE KEY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const logicOverlay = document.getElementById('logic-overlay');
+        const projectModal = document.getElementById('project-modal');
+        if (logicOverlay && logicOverlay.classList.contains('active')) closeLogicZoom();
+        else if (projectModal && !projectModal.classList.contains('hidden')) closeModal();
+    }
+});
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SCROLL SPY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function showSection(id) {
+    const target = document.getElementById('section-' + id);
+    if (target) {
+        const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }
+}
+
+const sections = document.querySelectorAll('main > div[id^="section-"]');
+const navButtons = {
+    'section-work':  document.getElementById('nav-work'),
+    'section-about': document.getElementById('nav-about')
+};
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            Object.values(navButtons).forEach(btn => { if (btn) btn.classList.remove('active'); });
+            const btn = navButtons[entry.target.id];
+            if (btn) btn.classList.add('active');
+        }
+    });
+}, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+sections.forEach(s => sectionObserver.observe(s));
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ RENDER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function observeReveal() {
+    const ro = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                ro.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.05 });
+    setTimeout(() => {
+        document.querySelectorAll('.project-card').forEach((card, idx) => {
+            if (!card.classList.contains('reveal')) {
+                card.classList.add('reveal');
+                card.style.transitionDelay = `${idx * 70}ms`;
+            }
+        });
+        document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+    }, 10);
+}
+
+function figureZoomEnter(img) {
+    img.style.transition = 'transform 0.12s ease-out';
+    img.style.transform = 'scale(1.9)';
+}
+
+function figureZoomMove(e, img) {
+    const r = img.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    img.style.transformOrigin = `${x}% ${y}%`;
+    img.style.transform = 'scale(1.9)';
+}
+
+function figureZoomLeave(img) {
+    img.style.transition = 'transform 0.18s ease-out';
+    img.style.transformOrigin = '50% 50%';
+    img.style.transform = 'scale(1)';
+}
+
+function renderProjects() {
+    const container = document.getElementById('projects-container');
+    container.innerHTML = projects.map(p => {
+        return `
+        <button onclick="openModal('${p.id}')" onkeydown="if(event.key==='Enter')openModal('${p.id}')"
+            tabindex="0" aria-label="View ${p.title}"
+            class="project-card text-left w-full"
+            style="background:var(--paper); border:1px solid var(--border); border-radius:16px; overflow:hidden; cursor:pointer; transition:all 0.4s; display:block;"
+            onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.08)'; this.style.borderColor='#C8BFB5';"
+            onmouseout="this.style.transform=''; this.style.boxShadow=''; this.style.borderColor='var(--border)';">
+            <div style="aspect-ratio:4/5; overflow:hidden; background:var(--cream);">
+                ${p.coverImages ? `
+                ${p.id === 'riseup' ? `
+                <div style="display:grid; grid-template-columns:1fr; grid-template-rows:1fr 1fr; height:100%;">
+                    <div style="overflow:hidden; width:100%;">
+                        <img src="${p.coverImages[0].url}" style="width:100%; height:100%; object-fit:cover; object-position:${p.coverImages[0].pos || '50% 50%'}; transition:transform 0.7s ease;"
+                            onerror="this.src='https://via.placeholder.com/600x800?text=${p.title}'"
+                            onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='';">
+                    </div>
+                    <div style="overflow:hidden; width:100%; border-top:1px solid var(--border);">
+                        <img src="${p.coverImages[1].url}" style="width:100%; height:100%; object-fit:cover; object-position:${p.coverImages[1].pos || '50% 50%'}; transition:transform 0.7s ease;"
+                            onerror="this.src='https://via.placeholder.com/600x800?text=${p.title}'"
+                            onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='';">
+                    </div>
+                </div>` : `
+                <div style="display:grid; grid-template-columns:1fr; grid-template-rows:1fr 1fr; height:100%;">
+                    ${p.coverImages.map((img, idx) => `
+                    <div style="overflow:hidden; width:100%; border-top:${idx === 0 ? 'none' : '1px solid var(--border)'};">
+                        <img src="${img.url}" style="width:100%; height:100%; object-fit:cover; object-position:${img.pos || '50% 50%'}; transition:transform 0.7s ease;"
+                            onerror="this.src='https://via.placeholder.com/600x800?text=${p.title}'"
+                            onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='';">
+                    </div>`).join('')}
+                </div>`}` : `
+                <img src="${p.image}" style="width:100%; height:100%; object-fit:cover; object-position:${p.imagePos || '50% 50%'}; transition:transform 0.7s ease;"
+                    onerror="this.src='https://via.placeholder.com/600x800?text=${p.title}'"
+                    onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''">`}
+            </div>
+            <div style="padding:24px 28px 28px;">
+                <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px;">
+                    ${p.tags.slice(0,4).map(t => `<span class="tag">${t}</span>`).join('')}
+                </div>
+                <h3 style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; letter-spacing:-0.01em; margin-bottom:6px; color:var(--ink);">${p.title}</h3>
+                <p style="font-size:13px; color:var(--muted); line-height:1.5; font-weight:300;">${p.subtitle}</p>
+            </div>
+        </button>`;
+    }).join('');
+    observeReveal();
+    lucide.createIcons();
+}
+
+// --------------------------- STEP UPDATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+let activeStep = 0;
+function updateStep(idx, projectId) {
+    activeStep = idx;
+    const p = projects.find(x => x.id === projectId);
+    const step = p.process[idx];
+    const images = step.imgs && step.imgs.length
+        ? step.imgs
+        : [{ url: step.img, pos: step.pos || '50% 50%' }];
+
+    document.querySelectorAll('.step-btn').forEach((btn, i) => btn.classList.toggle('active', i === idx));
+    const display = document.getElementById('step-display');
+
+    const imageGrid = images.length > 1
+        ? `<div style="display:grid; grid-template-columns:repeat(${images.length === 2 ? 2 : 2}, minmax(0,1fr)); gap:10px; margin-bottom:24px;">
+            ${images.map((media, mediaIdx) => `
+            <button onclick="openLogicZoom('${media.url}')" style="aspect-ratio:16/10; background:var(--cream); border-radius:12px; overflow:hidden; border:1px solid var(--border); padding:0; cursor:zoom-in;">
+                <img src="${media.url}" style="width:100%; height:100%; object-fit:contain; object-position:${media.pos || '50% 50%'}; cursor:zoom-in; background:var(--paper);"
+                    onmouseenter="figureZoomEnter(this)"
+                    onmousemove="figureZoomMove(event, this)"
+                    onmouseleave="figureZoomLeave(this)"
+                    onerror="this.src='https://via.placeholder.com/800x450?text=Figure+${idx+1}-${mediaIdx+1}'">
+            </button>`).join('')}
+        </div>`
+        : `<button onclick="openLogicZoom('${images[0].url}')" style="aspect-ratio:16/9; width:100%; background:var(--cream); border-radius:12px; overflow:hidden; margin-bottom:24px; border:1px solid var(--border); padding:0; cursor:zoom-in;">
+            <img src="${images[0].url}" style="width:100%; height:100%; object-fit:contain; object-position:${images[0].pos || '50% 50%'}; cursor:zoom-in; background:var(--paper);"
+                onmouseenter="figureZoomEnter(this)"
+                onmousemove="figureZoomMove(event, this)"
+                onmouseleave="figureZoomLeave(this)"
+                onerror="this.src='https://via.placeholder.com/800x450?text=Figure+${idx+1}'">
+        </button>`;
+
+    display.innerHTML = `
+        <div class="fade-content">
+            ${imageGrid}
+            <h4 style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; margin-bottom:12px; color:var(--ink);">${step.title}</h4>
+            <p style="font-size:15px; color:var(--muted); line-height:1.75; font-weight:300;">${step.desc}</p>
+        </div>`;
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ OPEN MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function openModal(id) {
+    const currentIdx = projects.findIndex(x => x.id === id);
+    const p = projects[currentIdx];
+    const prev = projects[currentIdx - 1];
+    const next = projects[currentIdx + 1];
+    const modal = document.getElementById('project-modal');
+    modal.scrollTo(0, 0);
+
+    modal.innerHTML = `
+        <!-- Close -->
+        <button onclick="closeModal()" aria-label="Close project"
+            style="position:fixed; top:12px; right:max(12px, calc((100vw - 960px) / 2 + 12px)); z-index:121; width:44px; height:44px; background:var(--paper); border:1px solid var(--border); border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; box-shadow:0 4px 18px rgba(0,0,0,0.12);"
+            onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='var(--paper)'">
+            <i data-lucide="x" style="width:18px; height:18px; color:var(--ink);"></i>
+        </button>
+
+        <!-- Modal nav bar -->
+        <nav style="position:sticky; top:0; background:rgba(255,255,255,0.88); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 32px; z-index:110; display:flex; justify-content:space-between; align-items:center;">
+            <button onclick="closeModal()" style="display:flex; align-items:center; gap:6px; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); cursor:pointer; border:none; background:none; transition:color .2s;"
+                onmouseover="this.style.color='var(--ink)'" onmouseout="this.style.color='var(--muted)'">
+                <i data-lucide="chevron-left" style="width:14px; height:14px;"></i> Back
+            </button>
+
+            <div></div>
+
+            <span style="font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:600; color:var(--ink);" class="hidden md:block">${p.title}</span>
+
+            <!-- Progress bar -->
+            <div id="modal-progress" style="position:absolute; bottom:0; left:0; height:2px; background:var(--accent); transition:width .1s; width:0%;"></div>
+        </nav>
+
+        <!-- Modal body -->
+        <div style="max-width:960px; margin:0 auto; padding:80px 32px 120px;">
+
+            <!-- â”€â”€ CASE STUDY OVERVIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+            <header style="margin-bottom:72px;">
+
+                <!-- Title block -->
+                <h1 style="font-family:'Cormorant Garamond',serif; font-size:clamp(40px,5.5vw,64px); font-weight:600; line-height:1.0; letter-spacing:-0.02em; margin-bottom:12px; color:var(--ink);">${p.subtitle}</h1>
+                <p style="font-size:13px; color:var(--muted); font-weight:400; margin-bottom:48px; letter-spacing:0.01em;">${p.client || 'Personal Project'}</p>
+
+                <div style="display:grid; grid-template-columns:1fr 220px; gap:48px; align-items:start; border-top:1px solid var(--border); padding-top:40px;">
+
+                    <!-- Left: Overview / Goal / Outcome -->
+                    <div>
+                        <!-- Overview -->
+                        <h2 style="font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; margin-bottom:14px; color:var(--ink);">Overview</h2>
+                        <p style="font-size:15px; line-height:1.8; color:var(--muted); font-weight:300; margin-bottom:36px;">${p.overview || p.challenge}</p>
+
+                        <!-- Goal callout -->
+                        <div style="border-left:3px solid var(--accent); padding:16px 20px; background:var(--accent-bg); border-radius:0 8px 8px 0; margin-bottom:36px;">
+                            <div class="label label-accent" style="margin-bottom:6px; display:flex; align-items:center; gap:5px;">
+                                <i data-lucide="zap" style="width:11px; height:11px;"></i> Goal
+                            </div>
+                            <p style="font-family:'Cormorant Garamond',serif; font-size:19px; font-style:italic; font-weight:500; color:var(--ink); line-height:1.5;">${p.goal || p.insight}</p>
+                        </div>
+
+                        ${p.id === 'riseup' ? `
+                        <div style="margin-bottom:36px; border-radius:12px; border:1px solid var(--border); overflow:hidden;">
+                            <div style="aspect-ratio:16/9;">
+                                <img src="pics service design portfolio/riseup/theconcept.jpg" style="width:100%; height:100%; object-fit:cover; object-position:50% 50%;">
+                            </div>
+                        </div>` : ''}
+
+                        <!-- Outcome -->
+                        ${p.outcomes ? `
+                        <h3 style="font-size:13px; font-weight:600; color:var(--ink); margin-bottom:14px; letter-spacing:0.01em;">Outcome</h3>
+                        <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;">
+                            ${p.outcomes.map(o => `
+                            <li style="display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.7; color:var(--muted); font-weight:300;">
+                                <span style="width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:8px; display:inline-block;"></span>
+                                ${o}
+                            </li>`).join('')}
+                        </ul>` : ''}
+                    </div>
+
+                    <!-- Right: meta sidebar -->
+                    <div style="position:sticky; top:88px; display:flex; flex-direction:column; gap:24px;">
+                        <div>
+                            <div class="label" style="margin-bottom:5px; font-weight:600;">My role</div>
+                            <p style="font-size:13px; color:var(--ink); line-height:1.5; font-weight:400;">${p.role}</p>
+                        </div>
+                        ${p.methods ? `
+                        <div>
+                            <div class="label" style="margin-bottom:6px; font-weight:600;">Methods</div>
+                            <p style="font-size:13px; color:var(--ink); line-height:1.6; font-weight:400;">${p.methods.join(', ')}</p>
+                        </div>` : ''}
+                        <div>
+                            <div class="label" style="margin-bottom:6px; font-weight:600;">Tools</div>
+                            <p style="font-size:13px; color:var(--ink); line-height:1.6; font-weight:400;">${p.tools.join(', ')}</p>
+                        </div>
+                        ${p.team ? `
+                        <div>
+                            <div class="label" style="margin-bottom:6px; font-weight:600;">Team</div>
+                            <p style="font-size:13px; color:var(--ink); line-height:1.6; font-weight:400;">${p.team.join(', ')}</p>
+                        </div>` : ''}
+                        <div>
+                            <div class="label" style="margin-bottom:5px; font-weight:600;">Year</div>
+                            <p style="font-size:13px; color:var(--ink); font-weight:400;">${p.timeline}</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            ${p.id !== 'riseup' ? `
+            <!-- Gallery -->
+            <section class="gallery-section" style="margin-bottom:72px;">
+                <div style="display:flex; align-items:center; gap:20px; margin-bottom:36px;">
+                    <span class="label modal-section-label">Evidence & Documentation</span>
+                    <div class="rule"></div>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px;">
+                    ${p.gallery.map(item => `
+                    <div style="background:var(--paper); border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:box-shadow .25s;"
+                        onmouseover="this.style.boxShadow='0 8px 24px rgba(0,0,0,0.07)'" onmouseout="this.style.boxShadow=''">
+                        <div style="aspect-ratio:4/3; overflow:hidden; background:var(--cream);">
+                            <img src="${item.url}" style="width:100%; height:100%; object-fit:cover; object-position:${item.pos || '50% 50%'}; cursor:zoom-in;"
+                                onmouseenter="figureZoomEnter(this)"
+                                onmousemove="figureZoomMove(event, this)"
+                                onmouseleave="figureZoomLeave(this)">
+                        </div>
+                        <div style="padding:16px 20px;">
+                            <h4 style="font-size:14px; font-weight:500; margin-bottom:4px; color:var(--ink);">${item.title}</h4>
+                            <p style="font-size:12px; color:var(--muted); line-height:1.6; font-weight:300;">${item.desc}</p>
+                        </div>
+                    </div>`).join('')}
+                </div>
+            </section>` : ''}
+
+            <!-- Interactive Journey -->
+            <section class="journey-section" style="margin-bottom:72px;">
+                <div style="display:flex; align-items:center; gap:20px; margin-bottom:36px;">
+                    <span class="label modal-section-label">Design Journey</span>
+                    <div class="rule"></div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 2fr; gap:32px;">
+                    <div style="display:flex; flex-direction:column; gap:4px;">
+                        ${p.process.map((step, i) => `
+                        <button onclick="updateStep(${i}, '${p.id}')"
+                            class="step-btn"
+                            style="text-align:left; padding:14px 16px; border-radius:8px; border-left:3px solid transparent; cursor:pointer; background:transparent; transition:all .2s; width:100%;">
+                            <span style="font-size:10px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:3px;">Step 0${i+1}</span>
+                            <h4 style="font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:var(--ink); line-height:1.3;">${step.title}</h4>
+                        </button>`).join('')}
+                    </div>
+                    <div id="step-display"></div>
+                </div>
+            </section>
+
+            <!-- Strategic Reflection -->
+            ${p.critique ? `
+            <section class="detail-text" style="margin-bottom:72px; padding:40px; background:var(--cream); border-radius:16px; border:1px solid var(--border);">
+                <div style="display:flex; align-items:center; gap:20px; margin-bottom:32px;">
+                    <span class="label modal-section-label">Strategic Reflection</span>
+                    <div class="rule"></div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px;">
+                    <div>
+                        <div class="label" style="margin-bottom:12px; color:var(--muted);">What Research Revealed</div>
+                        <p style="font-family:'Cormorant Garamond',serif; font-size:18px; font-style:italic; color:var(--ink); line-height:1.7;">"${p.critique}"</p>
+                    </div>
+                    <div>
+                        <div class="label" style="margin-bottom:12px; color:var(--muted);">Future Iterations</div>
+                        <p style="font-size:14px; color:var(--ink); line-height:1.75; font-weight:400;">${p.improvement}</p>
+                    </div>
+                </div>
+            </section>` : ''}
+
+            <!-- Logic Section (no dark bg) -->
+            <section style="margin-bottom:72px; padding:40px; background:var(--paper); border-radius:16px; border:1px solid var(--border);">
+                <div style="display:flex; align-items:center; gap:20px; margin-bottom:28px;">
+                    <span class="label modal-section-label" style="display:flex; align-items:center; gap:6px;">
+                        <i data-lucide="layers" style="width:12px; height:12px; color:var(--accent);"></i> Insight Into Interface
+                    </span>
+                    <div class="rule"></div>
+                </div>
+                <h2 style="font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:600; margin-bottom:12px; letter-spacing:-0.01em;">Bridging Data &amp; Interface</h2>
+                <p style="font-size:15px; color:var(--muted); line-height:1.75; margin-bottom:32px; max-width:600px; font-weight:300;">${p.logicSummary}</p>
+
+                <div onclick="openLogicZoom('${p.logicMap}')"
+                    style="position:relative; border-radius:12px; overflow:hidden; border:1px solid var(--border); aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; cursor:zoom-in; background:var(--cream); transition:border-color .2s;"
+                    onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                    <img src="${p.logicMap}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:${p.logicPos || '50% 50%'}; opacity:0.25; transition:opacity .3s;"
+                        onmouseover="this.style.opacity=0.45" onmouseout="this.style.opacity=0.25">
+
+                </div>
+            </section>
+
+            <!-- Prev / Next -->
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:48px; border-top:1px solid var(--border);">
+                ${prev ? `<button onclick="openModal('${prev.id}')" style="display:flex; align-items:center; gap:12px; text-align:left; cursor:pointer; border:none; background:none; transition:opacity .2s;" onmouseover="this.style.opacity=.6" onmouseout="this.style.opacity=1">
+                    <i data-lucide="arrow-left" style="width:18px; height:18px; color:var(--muted);"></i>
+                    <div>
+                        <div class="label" style="margin-bottom:3px;">Previous</div>
+                        <p style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--ink);">${prev.title}</p>
+                    </div>
+                </button>` : '<div></div>'}
+
+                <button onclick="closeModal()" style="font-size:11px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); cursor:pointer; border:none; background:none; display:flex; align-items:center; gap:6px; transition:color .2s;"
+                    onmouseover="this.style.color='var(--ink)'" onmouseout="this.style.color='var(--muted)'">
+                    <i data-lucide="grid" style="width:14px; height:14px;"></i> All Projects
+                </button>
+
+                ${next ? `<button onclick="openModal('${next.id}')" style="display:flex; align-items:center; gap:12px; text-align:right; cursor:pointer; border:none; background:none; transition:opacity .2s;" onmouseover="this.style.opacity=.6" onmouseout="this.style.opacity=1">
+                    <div>
+                        <div class="label" style="margin-bottom:3px;">Next</div>
+                        <p style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--ink);">${next.title}</p>
+                    </div>
+                    <i data-lucide="arrow-right" style="width:18px; height:18px; color:var(--muted);"></i>
+                </button>` : '<div></div>'}
+            </div>
+        </div>
+    `;
+
+    modal.classList.remove('hidden');
+    modal.classList.remove('animate-in');
+    // Force reflow so slide-in animation re-triggers when navigating prev/next.
+    void modal.offsetWidth;
+    modal.classList.add('animate-in');
+    document.body.classList.add('no-scroll');
+    lucide.createIcons();
+    updateStep(0, id);
+}
+
+function closeModal() {
+    document.getElementById('project-modal').classList.add('hidden');
+    document.body.classList.remove('no-scroll');
+}
+
+
+function openLogicZoom(url) {
+    document.getElementById('zoom-img').src = url;
+    document.getElementById('logic-overlay').classList.add('active');
+}
+function closeLogicZoom() {
+    document.getElementById('logic-overlay').classList.remove('active');
+}
+
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+renderProjects();
+
+// Scroll reveal
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+lucide.createIcons();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
