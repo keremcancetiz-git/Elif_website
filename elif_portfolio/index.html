@@ -286,6 +286,54 @@
             border-left: 1px solid var(--border);
             border-right: 1px solid var(--border);
         }
+
+        /* Custom "Gooey" Cursor */
+        .cursor-main {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        .cursor-outer {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            backdrop-filter: blur(1px);
+            transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+        }
+        .cursor-outer.hover {
+            width: 70px;
+            height: 70px;
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--accent);
+        }
+        
+        /* Click Ripple Effect */
+        .ripple {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.6;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (pointer: coarse) {
+            .cursor-main, .cursor-outer { display: none; }
+        }
+
     </style>
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -330,6 +378,7 @@
 </head>
 
 <body>
+    <div class="cursor-main"></div><div class="cursor-outer"></div>
 
     <!-- ══════════════════ NAVIGATION ══════════════════ -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-7" style="background: transparent;">
@@ -1148,6 +1197,69 @@
                 },
                 '--mesh-scroll': (i, target) => -ScrollTrigger.maxScroll(window) * 0.15 + 'px',
                 ease: "none"
+            });
+
+
+            // Custom Cursor Logic
+            const cursorMain = document.querySelector('.cursor-main');
+            const cursorOuter = document.querySelector('.cursor-outer');
+
+            let mouseX = 0, mouseY = 0;
+            let cursorX = 0, cursorY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Immediate main dot
+                gsap.set(cursorMain, {
+                    x: mouseX - 4,
+                    y: mouseY - 4
+                });
+            });
+
+            // Smooth trailing outer circle
+            gsap.ticker.add(() => {
+                const dt = 1.0 - Math.pow(1.0 - 0.15, gsap.ticker.deltaRatio());
+                cursorX += (mouseX - cursorX) * dt;
+                cursorY += (mouseY - cursorY) * dt;
+                
+                gsap.set(cursorOuter, {
+                    x: cursorX - 20,
+                    y: cursorY - 20
+                });
+            });
+
+            // Hover states
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .tag, .step-btn');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorOuter.classList.add('hover');
+                    gsap.to(cursorMain, { scale: 2, duration: 0.3 });
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorOuter.classList.remove('hover');
+                    gsap.to(cursorMain, { scale: 1, duration: 0.3 });
+                });
+            });
+
+            // Click Ripple Effect
+            window.addEventListener('click', (e) => {
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                document.body.appendChild(ripple);
+                
+                ripple.style.left = e.clientX + 'px';
+                ripple.style.top = e.clientY + 'px';
+                
+                gsap.to(ripple, {
+                    width: 120,
+                    height: 120,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    onComplete: () => ripple.remove()
+                });
             });
 
             // Parallax on Hero elements
