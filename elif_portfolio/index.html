@@ -45,14 +45,14 @@
             scroll-behavior: smooth;
         }
 
-        
+
         /* Subtle animated background mesh */
         body::after {
             content: '';
             position: fixed;
             inset: 0;
             z-index: -2;
-            background: 
+            background:
                 radial-gradient(circle at calc(10% + var(--mesh-x, 0px)) calc(20% + var(--mesh-y, 0px) + var(--mesh-scroll, 0px)), rgba(168, 85, 247, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at calc(90% - var(--mesh-x, 0px)) calc(80% - var(--mesh-y, 0px) + var(--mesh-scroll, 0px)), rgba(236, 72, 153, 0.1) 0%, transparent 50%);
             pointer-events: none;
@@ -128,7 +128,8 @@
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .reveal.visible, .no-js .reveal {
+        .reveal.visible,
+        .no-js .reveal {
             opacity: 1;
             transform: translateY(0);
         }
@@ -167,7 +168,7 @@
             opacity: 1;
         }
 
-                .fade-content {
+        .fade-content {
             animation: fadeIn 0.4s ease-in-out forwards;
         }
 
@@ -299,6 +300,7 @@
             mix-blend-mode: difference;
             transition: transform 0.1s ease;
         }
+
         .cursor-outer {
             width: 40px;
             height: 40px;
@@ -310,13 +312,14 @@
             backdrop-filter: blur(1px);
             transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
         }
+
         .cursor-outer.hover {
             width: 70px;
             height: 70px;
             background: rgba(168, 85, 247, 0.1);
             border-color: var(--accent);
         }
-        
+
         /* Click Ripple Effect */
         .ripple {
             position: fixed;
@@ -331,7 +334,11 @@
         }
 
         @media (pointer: coarse) {
-            .cursor-main, .cursor-outer { display: none; }
+
+            .cursor-main,
+            .cursor-outer {
+                display: none;
+            }
         }
 
 
@@ -342,8 +349,17 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-            .cursor-main, .cursor-outer, .ripple { display: none !important; }
-            .reveal { opacity: 1 !important; transform: none !important; }
+
+            .cursor-main,
+            .cursor-outer,
+            .ripple {
+                display: none !important;
+            }
+
+            .reveal {
+                opacity: 1 !important;
+                transform: none !important;
+            }
         }
 
 
@@ -351,7 +367,6 @@
             opacity: 1 !important;
             visibility: visible !important;
         }
-
     </style>
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -396,7 +411,8 @@
 </head>
 
 <body>
-    <div class="cursor-main"></div><div class="cursor-outer"></div>
+    <div class="cursor-main"></div>
+    <div class="cursor-outer"></div>
 
     <!-- ══════════════════ NAVIGATION ══════════════════ -->
     <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-7" style="background: transparent;">
@@ -411,8 +427,10 @@
 
             <!-- Nav links -->
             <div class="hidden md:flex items-center gap-8">
-                <button onclick="showSection('work')" id="nav-work" aria-label="Show work section" class="nav-link active">Work</button>
-                <button onclick="showSection('about')" id="nav-about" aria-label="Show about section" class="nav-link">About</button>
+                <button onclick="showSection('work')" id="nav-work" aria-label="Show work section"
+                    class="nav-link active">Work</button>
+                <button onclick="showSection('about')" id="nav-about" aria-label="Show about section"
+                    class="nav-link">About</button>
                 <a href="mailto:hello@elif.design" class="nav-link">Contact</a>
                 <a href="Elif_Ozyasar_CV_February.pdf" download
                     style="display:flex; align-items:center; gap:6px; background:transparent; border-top:1px solid var(--border); color:var(--ink); font-size:12px; font-weight:500; letter-spacing:0.06em; padding:9px 20px; border-radius:100px; transition:opacity 0.2s; text-transform:uppercase; text-decoration:none;"
@@ -532,21 +550,31 @@
                         style="transition-delay:100ms;">
                         <div
                             style="font-size:16px; line-height:1.8; color:var(--muted); font-weight:400; opacity: 0.9; display:flex; flex-direction:column; gap:20px;">
-<p><span class="about-sentence">I see myself as a reflective thinker before a designer. </span><span class="about-sentence">I am interested in how data and
-                                research can inform design decisions and help uncover what people actually need. </span><span class="about-sentence">I enjoy
-                                exploring emerging technologies while keeping my work grounded in real experiences and
-                                everyday use. </span></p>
-<p><span class="about-sentence">Reflection is an important part of my process. </span><span class="about-sentence">It helps me question assumptions,
-                                understand my values and how I relate to the world around me, and stay mindful of how my
-                                decisions influence the final design. </span><span class="about-sentence">My curiosity and attention to detail allow me to
-                                dig deeper into how people interact with products and services. </span></p>
-<p><span class="about-sentence">I am especially drawn to design research. </span><span class="about-sentence">I believe small details, the ones that are
-                                often overlooked, can shape how a product or service is experienced. </span></p>
-<p><span class="about-sentence">I also believe confidence comes from allowing yourself to be a beginner and committing to
-                                giving your best no matter what. </span><span class="about-sentence">Because of this, I am always open to learning and new
-                                experiences. </span><span class="about-sentence">In teams, I adapt easily to different perspectives and enjoy being a part
-                                of the early exploration and concept development stages. </span></p>
-</div>
+                            <p><span class="about-sentence">I see myself as a reflective thinker before a designer.
+                                </span><span class="about-sentence">I am interested in how data and
+                                    research can inform design decisions and help uncover what people actually need.
+                                </span><span class="about-sentence">I enjoy
+                                    exploring emerging technologies while keeping my work grounded in real experiences
+                                    and
+                                    everyday use. </span></p>
+                            <p><span class="about-sentence">Reflection is an important part of my process. </span><span
+                                    class="about-sentence">It helps me question assumptions,
+                                    understand my values and how I relate to the world around me, and stay mindful of
+                                    how my
+                                    decisions influence the final design. </span><span class="about-sentence">My
+                                    curiosity and attention to detail allow me to
+                                    dig deeper into how people interact with products and services. </span></p>
+                            <p><span class="about-sentence">I am especially drawn to design research. </span><span
+                                    class="about-sentence">I believe small details, the ones that are
+                                    often overlooked, can shape how a product or service is experienced. </span></p>
+                            <p><span class="about-sentence">I also believe confidence comes from allowing yourself to be
+                                    a beginner and committing to
+                                    giving your best no matter what. </span><span class="about-sentence">Because of
+                                    this, I am always open to learning and new
+                                    experiences. </span><span class="about-sentence">In teams, I adapt easily to
+                                    different perspectives and enjoy being a part
+                                    of the early exploration and concept development stages. </span></p>
+                        </div>
                         <div>
                             <div
                                 style="margin-bottom:6px; display:flex; align-items:center; gap:16px; padding-bottom:20px; border-bottom:1px solid var(--border);">
@@ -558,15 +586,18 @@
                                 <li
                                     style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
                                     <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Figma</li>
+                                        style="width:14px; height:14px; color:var(--accent);"></i>Figma
+                                </li>
                                 <li
                                     style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
                                     <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Adobe CC</li>
+                                        style="width:14px; height:14px; color:var(--accent);"></i>Adobe CC
+                                </li>
                                 <li
                                     style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
                                     <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Arduino IDE</li>
+                                        style="width:14px; height:14px; color:var(--accent);"></i>Arduino IDE
+                                </li>
                                 <li
                                     style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
                                     <i data-lucide="check"
@@ -575,11 +606,13 @@
                                 <li
                                     style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
                                     <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Miro</li>
+                                        style="width:14px; height:14px; color:var(--accent);"></i>Miro
+                                </li>
                                 <li
                                     style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
                                     <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>DataFoundry</li>
+                                        style="width:14px; height:14px; color:var(--accent);"></i>DataFoundry
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -809,7 +842,7 @@
         });
 
         // ─────────────────────────── SCROLL SPY ───────────────────────────
-                function showSection(id) {
+        function showSection(id) {
             const target = document.getElementById('section-' + id);
             if (target) {
                 if (window.lenis) {
@@ -818,8 +851,6 @@
                     const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
                     window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
                 }
-            }
-        });
             }
         }
 
@@ -888,24 +919,24 @@
         }
 
         // ─────────────────────────── STEP UPDATE ──────────────────────────
-        
-function figureZoomEnter(img) {
-    img.style.transform = 'scale(2)';
-    img.style.objectFit = 'none';
-}
-function figureZoomMove(e, img) {
-    const rect = img.parentElement.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    img.style.objectPosition = `${x}% ${y}%`;
-}
-function figureZoomLeave(img) {
-    img.style.transform = 'scale(1)';
-    img.style.objectFit = 'contain';
-    img.style.objectPosition = '50% 50%';
-}
 
-let activeStep = 0;
+        function figureZoomEnter(img) {
+            img.style.transform = 'scale(2)';
+            img.style.objectFit = 'none';
+        }
+        function figureZoomMove(e, img) {
+            const rect = img.parentElement.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            img.style.objectPosition = `${x}% ${y}%`;
+        }
+        function figureZoomLeave(img) {
+            img.style.transform = 'scale(1)';
+            img.style.objectFit = 'contain';
+            img.style.objectPosition = '50% 50%';
+        }
+
+        let activeStep = 0;
         function updateStep(idx, projectId) {
             activeStep = idx;
             const p = projects.find(x => x.id === projectId);
@@ -1143,7 +1174,7 @@ let activeStep = 0;
             void modal.offsetWidth;
             modal.classList.add('animate-in');
             document.body.classList.add('no-scroll');
-            if(window.lenis) window.lenis.stop();
+            if (window.lenis) window.lenis.stop();
             lucide.createIcons();
             updateStep(0, id);
         }
@@ -1151,7 +1182,7 @@ let activeStep = 0;
         function closeModal() {
             document.getElementById('project-modal').classList.add('hidden');
             document.body.classList.remove('no-scroll');
-            if(window.lenis) window.lenis.start();
+            if (window.lenis) window.lenis.start();
         }
 
 
@@ -1208,7 +1239,7 @@ let activeStep = 0;
             // Text reveal scroll scrub
             const aboutSentences = document.querySelectorAll('.about-sentence');
             if (aboutSentences.length > 0) {
-                if(!prefersReducedMotion) gsap.from(aboutSentences, {
+                if (!prefersReducedMotion) gsap.from(aboutSentences, {
                     scrollTrigger: {
                         trigger: "#section-about",
                         start: "top 80%",
@@ -1226,7 +1257,7 @@ let activeStep = 0;
                 const x = (e.clientX / window.innerWidth - 0.5) * 30;
                 const y = (e.clientY / window.innerHeight - 0.5) * 30;
                 // Animate background color gradients via variable or translation
-                if(!prefersReducedMotion) gsap.to('body', {
+                if (!prefersReducedMotion) gsap.to('body', {
                     '--mesh-x': `${x}px`,
                     '--mesh-y': `${y}px`,
                     duration: 2,
@@ -1235,7 +1266,7 @@ let activeStep = 0;
             });
 
             // Parallax background on scroll
-            if(!prefersReducedMotion) gsap.to("body", {
+            if (!prefersReducedMotion) gsap.to("body", {
                 scrollTrigger: {
                     scrub: true
                 },
@@ -1254,21 +1285,21 @@ let activeStep = 0;
             window.addEventListener('mousemove', (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
-                
+
                 // Immediate main dot
-                if(!prefersReducedMotion) gsap.set(cursorMain, {
+                if (!prefersReducedMotion) gsap.set(cursorMain, {
                     x: mouseX - 4,
                     y: mouseY - 4
                 });
             });
 
             // Smooth trailing outer circle
-            if(!prefersReducedMotion) gsap.ticker.add(() => {
+            if (!prefersReducedMotion) gsap.ticker.add(() => {
                 const dt = 1.0 - Math.pow(1.0 - 0.15, gsap.ticker.deltaRatio());
                 cursorX += (mouseX - cursorX) * dt;
                 cursorY += (mouseY - cursorY) * dt;
-                
-                if(!prefersReducedMotion) gsap.set(cursorOuter, {
+
+                if (!prefersReducedMotion) gsap.set(cursorOuter, {
                     x: cursorX - 20,
                     y: cursorY - 20
                 });
@@ -1279,11 +1310,11 @@ let activeStep = 0;
             interactiveElements.forEach(el => {
                 el.addEventListener('mouseenter', () => {
                     cursorOuter.classList.add('hover');
-                    if(!prefersReducedMotion) gsap.to(cursorMain, { scale: 2, duration: 0.3 });
+                    if (!prefersReducedMotion) gsap.to(cursorMain, { scale: 2, duration: 0.3 });
                 });
                 el.addEventListener('mouseleave', () => {
                     cursorOuter.classList.remove('hover');
-                    if(!prefersReducedMotion) gsap.to(cursorMain, { scale: 1, duration: 0.3 });
+                    if (!prefersReducedMotion) gsap.to(cursorMain, { scale: 1, duration: 0.3 });
                 });
             });
 
@@ -1292,11 +1323,11 @@ let activeStep = 0;
                 const ripple = document.createElement('div');
                 ripple.className = 'ripple';
                 document.body.appendChild(ripple);
-                
+
                 ripple.style.left = e.clientX + 'px';
                 ripple.style.top = e.clientY + 'px';
-                
-                if(!prefersReducedMotion) gsap.to(ripple, {
+
+                if (!prefersReducedMotion) gsap.to(ripple, {
                     width: 120,
                     height: 120,
                     opacity: 0,
@@ -1307,7 +1338,7 @@ let activeStep = 0;
             });
 
             // Parallax on Hero elements
-            if(!prefersReducedMotion) gsap.from(".gsap-reveal", {
+            if (!prefersReducedMotion) gsap.from(".gsap-reveal", {
                 y: 60,
                 rotationX: -15,
                 opacity: 0,
@@ -1325,7 +1356,7 @@ let activeStep = 0;
                     const x = e.pageX - position.left - position.width / 2;
                     const y = e.pageY - position.top - position.height / 2;
 
-                    if(!prefersReducedMotion) gsap.to(elem, {
+                    if (!prefersReducedMotion) gsap.to(elem, {
                         x: x * 0.2, // Magnet strength
                         y: y * 0.2,
                         duration: 0.6,
@@ -1333,7 +1364,7 @@ let activeStep = 0;
                     });
                 });
                 elem.addEventListener('mouseleave', () => {
-                    if(!prefersReducedMotion) gsap.to(elem, {
+                    if (!prefersReducedMotion) gsap.to(elem, {
                         x: 0,
                         y: 0,
                         duration: 0.6,
@@ -1347,7 +1378,7 @@ let activeStep = 0;
                 ScrollTrigger.batch(".project-card-wrapper", {
                     interval: 0.1,
                     batchMax: 3,
-                                        onEnter: batch => {
+                    onEnter: batch => {
                         if (!prefersReducedMotion) gsap.fromTo(batch,
                             { opacity: 0, y: 80, rotationX: 10, scale: 0.95 },
                             { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "power3.out", stagger: 0.15, overwrite: true }
