@@ -128,7 +128,7 @@
             transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .reveal.visible {
+        .reveal.visible, .no-js .reveal {
             opacity: 1;
             transform: translateY(0);
         }
@@ -167,8 +167,8 @@
             opacity: 1;
         }
 
-        .fade-content {
-            animation: fadeIn 0.4s ease-in-out;
+                .fade-content {
+            animation: fadeIn 0.4s ease-in-out forwards;
         }
 
         @keyframes fadeIn {
@@ -344,6 +344,12 @@
             }
             .cursor-main, .cursor-outer, .ripple { display: none !important; }
             .reveal { opacity: 1 !important; transform: none !important; }
+        }
+
+
+        .fade-content img {
+            opacity: 1 !important;
+            visibility: visible !important;
         }
 
     </style>
@@ -803,11 +809,17 @@
         });
 
         // ─────────────────────────── SCROLL SPY ───────────────────────────
-        function showSection(id) {
+                function showSection(id) {
             const target = document.getElementById('section-' + id);
             if (target) {
-                const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                if (window.lenis) {
+                    window.lenis.scrollTo(target, { offset: -100, duration: 1.5 });
+                } else {
+                    const offsetPosition = target.getBoundingClientRect().top + window.pageYOffset - 100;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            }
+        });
             }
         }
 
@@ -1131,6 +1143,7 @@ let activeStep = 0;
             void modal.offsetWidth;
             modal.classList.add('animate-in');
             document.body.classList.add('no-scroll');
+            if(window.lenis) window.lenis.stop();
             lucide.createIcons();
             updateStep(0, id);
         }
@@ -1138,6 +1151,7 @@ let activeStep = 0;
         function closeModal() {
             document.getElementById('project-modal').classList.add('hidden');
             document.body.classList.remove('no-scroll');
+            if(window.lenis) window.lenis.start();
         }
 
 
@@ -1169,7 +1183,7 @@ let activeStep = 0;
         document.addEventListener("DOMContentLoaded", (event) => {
             const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             // Initialize Lenis smooth scroll
-            const lenis = new Lenis({
+            window.lenis = new Lenis({
                 duration: 1.2,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                 direction: 'vertical',
