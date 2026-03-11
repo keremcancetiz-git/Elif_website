@@ -45,17 +45,20 @@
             scroll-behavior: smooth;
         }
 
+        
         /* Subtle animated background mesh */
         body::after {
             content: '';
             position: fixed;
             inset: 0;
             z-index: -2;
-            background:
-                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            background: 
+                radial-gradient(circle at calc(10% + var(--mesh-x, 0px)) calc(20% + var(--mesh-y, 0px) + var(--mesh-scroll, 0px)), rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at calc(90% - var(--mesh-x, 0px)) calc(80% - var(--mesh-y, 0px) + var(--mesh-scroll, 0px)), rgba(236, 72, 153, 0.1) 0%, transparent 50%);
             pointer-events: none;
+            transition: background 0.1s linear;
         }
+
 
         h1,
         h2,
@@ -462,21 +465,21 @@
                         style="transition-delay:100ms;">
                         <div
                             style="font-size:16px; line-height:1.8; color:var(--muted); font-weight:400; opacity: 0.9; display:flex; flex-direction:column; gap:20px;">
-                            <p>I see myself as a reflective thinker before a designer. I am interested in how data and
-                                research can inform design decisions and help uncover what people actually need. I enjoy
+<p><span class="about-sentence">I see myself as a reflective thinker before a designer. </span><span class="about-sentence">I am interested in how data and
+                                research can inform design decisions and help uncover what people actually need. </span><span class="about-sentence">I enjoy
                                 exploring emerging technologies while keeping my work grounded in real experiences and
-                                everyday use.</p>
-                            <p>Reflection is an important part of my process. It helps me question assumptions,
+                                everyday use. </span></p>
+<p><span class="about-sentence">Reflection is an important part of my process. </span><span class="about-sentence">It helps me question assumptions,
                                 understand my values and how I relate to the world around me, and stay mindful of how my
-                                decisions influence the final design. My curiosity and attention to detail allow me to
-                                dig deeper into how people interact with products and services.</p>
-                            <p>I am especially drawn to design research. I believe small details, the ones that are
-                                often overlooked, can shape how a product or service is experienced.</p>
-                            <p>I also believe confidence comes from allowing yourself to be a beginner and committing to
-                                giving your best no matter what. Because of this, I am always open to learning and new
-                                experiences. In teams, I adapt easily to different perspectives and enjoy being a part
-                                of the early exploration and concept development stages.</p>
-                        </div>
+                                decisions influence the final design. </span><span class="about-sentence">My curiosity and attention to detail allow me to
+                                dig deeper into how people interact with products and services. </span></p>
+<p><span class="about-sentence">I am especially drawn to design research. </span><span class="about-sentence">I believe small details, the ones that are
+                                often overlooked, can shape how a product or service is experienced. </span></p>
+<p><span class="about-sentence">I also believe confidence comes from allowing yourself to be a beginner and committing to
+                                giving your best no matter what. </span><span class="about-sentence">Because of this, I am always open to learning and new
+                                experiences. </span><span class="about-sentence">In teams, I adapt easily to different perspectives and enjoy being a part
+                                of the early exploration and concept development stages. </span></p>
+</div>
                         <div>
                             <div
                                 style="margin-bottom:6px; display:flex; align-items:center; gap:16px; padding-bottom:20px; border-bottom:1px solid var(--border);">
@@ -1107,6 +1110,45 @@
 
             // Sync GSAP ScrollTrigger with Lenis
             gsap.registerPlugin(ScrollTrigger);
+
+
+            // Text reveal scroll scrub
+            const aboutSentences = document.querySelectorAll('.about-sentence');
+            if (aboutSentences.length > 0) {
+                gsap.from(aboutSentences, {
+                    scrollTrigger: {
+                        trigger: "#section-about",
+                        start: "top 80%",
+                        end: "bottom 80%",
+                        scrub: 1,
+                    },
+                    opacity: 0.2,
+                    stagger: 0.1,
+                    ease: "none"
+                });
+            }
+
+            // Mouse parallax for ambient mesh
+            window.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 30;
+                const y = (e.clientY / window.innerHeight - 0.5) * 30;
+                // Animate background color gradients via variable or translation
+                gsap.to('body', {
+                    '--mesh-x': `${x}px`,
+                    '--mesh-y': `${y}px`,
+                    duration: 2,
+                    ease: "power2.out"
+                });
+            });
+
+            // Parallax background on scroll
+            gsap.to("body", {
+                scrollTrigger: {
+                    scrub: true
+                },
+                '--mesh-scroll': (i, target) => -ScrollTrigger.maxScroll(window) * 0.15 + 'px',
+                ease: "none"
+            });
 
             // Parallax on Hero elements
             gsap.from(".gsap-reveal", {
