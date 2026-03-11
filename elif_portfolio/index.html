@@ -876,7 +876,24 @@
         }
 
         // ─────────────────────────── STEP UPDATE ──────────────────────────
-        let activeStep = 0;
+        
+function figureZoomEnter(img) {
+    img.style.transform = 'scale(2)';
+    img.style.objectFit = 'none';
+}
+function figureZoomMove(e, img) {
+    const rect = img.parentElement.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    img.style.objectPosition = `${x}% ${y}%`;
+}
+function figureZoomLeave(img) {
+    img.style.transform = 'scale(1)';
+    img.style.objectFit = 'contain';
+    img.style.objectPosition = '50% 50%';
+}
+
+let activeStep = 0;
         function updateStep(idx, projectId) {
             activeStep = idx;
             const p = projects.find(x => x.id === projectId);
@@ -1316,10 +1333,12 @@
                 ScrollTrigger.batch(".project-card-wrapper", {
                     interval: 0.1,
                     batchMax: 3,
-                    onEnter: batch => if(!prefersReducedMotion) gsap.fromTo(batch,
-                        { opacity: 0, y: 80, rotationX: 10, scale: 0.95 },
-                        { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "power3.out", stagger: 0.15, overwrite: true }
-                    )
+                                        onEnter: batch => {
+                        if (!prefersReducedMotion) gsap.fromTo(batch,
+                            { opacity: 0, y: 80, rotationX: 10, scale: 0.95 },
+                            { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 1.2, ease: "power3.out", stagger: 0.15, overwrite: true }
+                        )
+                    }
                 });
             };
         });
