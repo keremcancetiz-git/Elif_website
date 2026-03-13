@@ -13,25 +13,27 @@
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
     <style>
         :root {
-            --cream: #0f1115;
-            /* Deep modern dark */
-            --paper: #161922;
-            /* Elevated surface */
-            --border: rgba(255, 255, 255, 0.06);
-            --ink: #fdfdfd;
-            /* High contrast white text */
-            --muted: #a0aabf;
-            /* Muted elegant text */
-            --accent: #a855f7;
-            /* Vivid modern purple */
-            --accent-bg: rgba(168, 85, 247, 0.12);
-            --gradient-1: #a855f7;
-            --gradient-2: #ec4899;
+            --cream: #fdfdfd;
+            /* Soft neutral background */
+            --paper: #ffffff;
+            /* Pure white surface */
+            --border: rgba(0, 0, 0, 0.08);
+            /* Subtle dark border */
+            --ink: #1a1a1a;
+            /* Off-black text for readability */
+            --muted: #666666;
+            /* Soft gray for secondary info */
+            --accent: #111111;
+            /* Minimalist black accent */
+            --accent-bg: #f5f5f5;
+            /* Light gray background for chips */
+            --gradient-1: #1a1a1a;
+            --gradient-2: #444444;
         }
 
         * {
@@ -39,10 +41,11 @@
         }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--cream);
             color: var(--ink);
             scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
         }
 
         h1,
@@ -50,21 +53,23 @@
         h3,
         h4,
         .serif {
-            font-family: 'Archivo', sans-serif;
+            font-family: 'Cormorant Garamond', serif;
             letter-spacing: -0.01em;
+            color: var(--ink);
         }
 
 
-        /* Hardware-accelerated background mesh */
+        /* Hardware-accelerated background mesh - Light Theme */
         .bg-mesh-container {
             position: fixed;
             inset: 0;
             z-index: -2;
             pointer-events: none;
             overflow: hidden;
-            background: #0f1115;
-            filter: blur(80px);
+            background: #fdfdfd;
+            filter: blur(100px);
             will-change: transform;
+            opacity: 0.4;
         }
 
         .mesh-ball {
@@ -77,7 +82,7 @@
         .mesh-ball-1 {
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 70%);
             left: -200px;
             top: -200px;
         }
@@ -85,14 +90,14 @@
         .mesh-ball-2 {
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.02) 0%, transparent 70%);
             right: -100px;
             bottom: -100px;
         }
 
         /* Modern Gradient Text */
         .text-gradient {
-            background: linear-gradient(135deg, #fdfdfd 0%, #a0aabf 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #666666 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -114,17 +119,17 @@
 
         .project-card {
             position: relative;
-            background: rgba(22, 25, 34, 0.4) !important;
-            backdrop-filter: blur(12px) !important;
-            transition: background 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: var(--paper) !important;
+            border: 1px solid var(--border) !important;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
             transform-style: preserve-3d;
             will-change: transform;
             overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
         }
 
         .project-card:hover {
-            background: var(--paper) !important;
-            box-shadow: -10px 30px 60px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(168, 85, 247, 0.4) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
         }
 
         .project-card .project-image {
@@ -133,13 +138,13 @@
         }
 
         .project-card:hover .project-image {
-            transform: scale(1.1) rotate(1deg);
+            transform: scale(1.05);
         }
 
         .project-card-shine {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at var(--shine-x, 50%) var(--shine-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+            background: radial-gradient(circle at var(--shine-x, 50%) var(--shine-y, 50%), rgba(255, 255, 255, 0.3) 0%, transparent 60%);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.4s;
@@ -338,25 +343,24 @@
         /* ── Tag chips ──────────────────────────────────────────────────── */
         .tag {
             font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
+            font-weight: 500;
+            letter-spacing: 0.05em;
             color: var(--ink);
             background: var(--accent-bg);
             padding: 4px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 4px;
+            border: 1px solid var(--border);
             transition: all 0.3s;
         }
 
         .tag:hover {
-            background: rgba(168, 85, 247, 0.25);
-            border-color: rgba(168, 85, 247, 0.4);
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+            background: #ededed;
+            border-color: #999;
         }
 
         /* Glass Panel Helper */
         .glass-panel {
-            background: rgba(15, 17, 21, 0.75) !important;
+            background: rgba(255, 255, 255, 0.8) !important;
             backdrop-filter: blur(24px) saturate(150%);
             -webkit-backdrop-filter: blur(24px) saturate(150%);
             border-left: 1px solid var(--border);
@@ -379,7 +383,7 @@
         .cursor-outer {
             width: 40px;
             height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 50%;
             position: fixed;
             pointer-events: none;
@@ -391,7 +395,7 @@
         .cursor-outer.hover {
             width: 70px;
             height: 70px;
-            background: rgba(168, 85, 247, 0.1);
+            background: rgba(0, 0, 0, 0.05);
             border-color: var(--accent);
         }
 
@@ -625,7 +629,7 @@
                         style="font-size:clamp(40px,6vw,64px); font-weight:600; font-style:italic; line-height:1.1; margin-bottom:64px; letter-spacing:-0.01em;">
                         About Me.
                     </h2>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px;" class="gsap-reveal"
+                    <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:80px;" class="gsap-reveal"
                         style="transition-delay:100ms;">
                         <div
                             style="font-size:16px; line-height:1.8; color:var(--muted); font-weight:400; opacity: 0.9; display:flex; flex-direction:column; gap:20px;">
@@ -654,48 +658,84 @@
                                     different perspectives and enjoy being a part
                                     of the early exploration and concept development stages. </span></p>
                         </div>
-                        <div>
+                        <div style="display:flex; flex-direction:column; gap:48px;">
+                            <!-- Stats block -->
                             <div
-                                style="margin-bottom:6px; display:flex; align-items:center; gap:16px; padding-bottom:20px; border-bottom:1px solid var(--border);">
-                                <span class="label label-accent">Toolkit</span>
+                                style="background:var(--paper); border:1px solid var(--border); border-radius:12px; padding:32px; display:flex; flex-direction:column; gap:24px;">
+                                <div>
+                                    <span class="label" style="display:block; margin-bottom:8px;">Location</span>
+                                    <div
+                                        style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:500;">
+                                        Eindhoven, NL / Remote</div>
+                                </div>
                                 <div class="rule"></div>
+                                <div>
+                                    <span class="label" style="display:block; margin-bottom:8px;">Availability</span>
+                                    <div
+                                        style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:500;">
+                                        Freelance / Internships</div>
+                                </div>
+                                <div class="rule"></div>
+                                <div>
+                                    <span class="label" style="display:block; margin-bottom:8px;">Education</span>
+                                    <div
+                                        style="font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:500;">
+                                        BSc Industrial Design, TU/e</div>
+                                </div>
                             </div>
-                            <ul
-                                style="margin-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:10px; list-style:none; padding:0;">
-                                <li
-                                    style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
-                                    <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Figma
-                                </li>
-                                <li
-                                    style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
-                                    <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Adobe CC
-                                </li>
-                                <li
-                                    style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
-                                    <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Arduino IDE
-                                </li>
-                                <li
-                                    style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
-                                    <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Service Blueprints
-                                </li>
-                                <li
-                                    style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
-                                    <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>Miro
-                                </li>
-                                <li
-                                    style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
-                                    <i data-lucide="check"
-                                        style="width:14px; height:14px; color:var(--accent);"></i>DataFoundry
-                                </li>
-                            </ul>
+
+                            <div>
+                                <div
+                                    style="margin-bottom:6px; display:flex; align-items:center; gap:16px; padding-bottom:20px; border-bottom:1px solid var(--border);">
+                                    <span class="label">Toolkit</span>
+                                    <div class="rule"></div>
+                                </div>
+                                <ul
+                                    style="margin-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; list-style:none; padding:0;">
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>Figma
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>Adobe CC
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>Logic Pro
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>JavaScript
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>Arduino IDE
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>Service
+                                        Blueprints
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>Miro
+                                    </li>
+                                    <li
+                                        style="display:flex; align-items:center; gap:8px; font-size:14px; color:var(--ink); font-weight:400;">
+                                        <i data-lucide="check"
+                                            style="width:14px; height:14px; color:var(--accent);"></i>DataFoundry
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </div>
             </section>
         </div>
     </main>
@@ -892,7 +932,7 @@
         window.addEventListener('scroll', () => {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 40) {
-                navbar.style.background = 'rgba(15,17,21,0.85)';
+                navbar.style.background = 'rgba(253, 253, 253, 0.85)';
                 navbar.style.backdropFilter = 'blur(12px)';
                 navbar.style.boxShadow = '0 1px 0 var(--border)';
             } else {
@@ -1058,7 +1098,7 @@
         </button>
 
         <!-- Modal nav bar -->
-        <nav style="position:sticky; top:0; background:rgba(22, 25, 34, 0.7); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 32px; z-index:110; display:flex; justify-content:space-between; align-items:center;">
+        <nav style="position:sticky; top:0; background:rgba(253, 253, 253, 0.8); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 32px; z-index:110; display:flex; justify-content:space-between; align-items:center;">
             <button onclick="closeModal()" style="display:flex; align-items:center; gap:6px; font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); cursor:pointer; border:none; background:none; transition:color .2s;"
                 onmouseover="this.style.color='var(--ink)'" onmouseout="this.style.color='var(--muted)'">
                 <i data-lucide="chevron-left" style="width:14px; height:14px;"></i> Back
@@ -1128,7 +1168,7 @@
                         </div>` : ''}
                         <div>
                             <div class="label" style="margin-bottom:6px; font-weight:600;">Tools</div>
-                            <p style="font-size:13px; color:var(--ink); line-height:1.6; font-weight:400;">${p.tools.join(', ')}</p>
+                            <p style="font-size:13px; color:var(--muted); line-height:1.6; font-weight:400;">${p.tools.join(', ')}</p>
                         </div>
                         ${p.team ? `
                         <div>
