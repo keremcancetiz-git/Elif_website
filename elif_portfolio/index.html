@@ -531,9 +531,10 @@
                     class="nav-link">About</button>
                 <a href="mailto:hello@elif.design" class="nav-link" aria-label="Send email to Elif">Contact</a>
                 <a href="Elif_Ozyasar_CV_February.pdf" download aria-label="Download Elif's CV"
-                    style="display:flex; align-items:center; gap:6px; background:transparent; border-top:1px solid var(--border); color:var(--ink); font-size:12px; font-weight:500; letter-spacing:0.06em; padding:9px 20px; border-radius:100px; transition:opacity 0.2s; text-transform:uppercase; text-decoration:none;"
-                    onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'">
-                    <i data-lucide="download" style="width:13px; height:13px;"></i> CV
+                    style="display:flex; align-items:center; gap:8px; background:var(--paper); border:1px solid var(--border); color:var(--ink); font-size:12px; font-weight:600; letter-spacing:0.04em; padding:10px 22px; border-radius:100px; transition:all 0.2s; text-transform:uppercase; text-decoration:none; box-shadow: 0 2px 8px rgba(0,0,0,0.03);"
+                    onmouseover="this.style.background='var(--accent-bg)'; this.style.borderColor='var(--muted)'"
+                    onmouseout="this.style.background='var(--paper)'; this.style.borderColor='var(--border)'">
+                    <i data-lucide="download" style="width:14px; height:14px;"></i> CV
                 </a>
             </div>
         </div>
@@ -1116,7 +1117,7 @@
 
         <!-- Modal close overlay -->
         <div onclick="closeModal()" aria-label="Close modal background"
-            style="position:absolute; inset:0; background:rgba(253,253,253,0.4); backdrop-filter:blur(32px); cursor:pointer;">
+            style="position:fixed; inset:0; background:rgba(253,253,253,0.4); backdrop-filter:blur(32px); cursor:pointer; z-index:100;">
         </div>
         <!-- Modal nav bar -->
         <nav style="position:sticky; top:0; background:rgba(253, 253, 253, 0.8); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); padding:16px 32px; z-index:110; display:flex; justify-content:space-between; align-items:center;">
@@ -1134,7 +1135,7 @@
         </nav>
 
         <!-- Modal body -->
-        <div style="max-width:960px; margin:0 auto; padding:80px 32px 120px;">
+        <div style="max-width:960px; margin:0 auto; padding:80px 32px 120px; position:relative; z-index:120;">
 
             <!-- ── CASE STUDY OVERVIEW ─────────────────────────────────── -->
             <header style="margin-bottom:72px;">
