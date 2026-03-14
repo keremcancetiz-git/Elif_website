@@ -1,0 +1,7 @@
+# Exclude oversized files from GitHub
+Archive/Internship report B3.1 Elif Ozyasar 1777920.pdf
+Logs/ffmpeg2pass-0.log.mbtree
+Unused/
+*.tmp*
+*.bak
+.DS_Store
