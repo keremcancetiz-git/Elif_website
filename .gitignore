@@ -1,3 +1,13 @@
+# Standard React/Vite ignores
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vscode/
+.idea/
+.DS_Store
+
+# Originals
 Internship report B3.1 Elif Ozyasar 1777920.pdf
 ffmpeg2pass-0.log.mbtree
 ffmpeg2pass-0.log
@@ -5,4 +15,3 @@ ffmpeg2pass-0.log
 *.tmp
 *.backup
 *_backup*
-.DS_Store
